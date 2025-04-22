@@ -1,5 +1,5 @@
 from puzzle_8 import Puzzle_8
-from metodos_busca import busca_largura, busca_profundidade, busca_profundidade_limitada, busca_profundidade_visitado
+from metodos_busca import busca_largura, busca_profundidade, busca_profundidade_limitada, busca_profundidade_visitado, busca_gulosa
 
 teste = [
         [1, 5, 2],
@@ -23,6 +23,26 @@ teste_3 = [
 puzzle = Puzzle_8()
 puzzle.setNumbers(teste)
 
+print("="*50)
+print("BUSCA GULOSA (1)")
+print("="*50)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_gulosa(puzzle)
+if caminho_bfs is None:
+    print("Não foi possível encontrar uma solução.")
+else:
+    print(f"Caminho encontrado em {len(caminho_bfs)-1} passos:")
+    for i, estado in enumerate(caminho_bfs):
+        print(f"Passo {i}:")
+        print(estado)
+
+    print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
+    print(f"Custo de tempo (nós visitados): {custo_tempo}")
+
+
+# puzzle.reset()
+# puzzle.setNumbers(teste_2)
+
+'''
 print("="*50)
 print("BUSCA EM LARGURA (1)")
 print("="*50)
@@ -216,3 +236,5 @@ else:
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
     print(f"Profundidade máxima: {profundidade_max}")
+
+'''

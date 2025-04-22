@@ -1,5 +1,7 @@
 #from puzzle_8 import Puzzle_8
 from copy import deepcopy
+import heapq
+from itertools import count
 
 gabarito = [[1,2,3],[4,5,6],[7,8,0]]
 
@@ -190,5 +192,66 @@ def busca_profundidade_visitado(puzzle):
 
 # Busca heuristica (gulosa)
 
+# definindo a heurística de Manhattan
+# A função calcula a soma das distâncias de Manhattan de cada número em relação à sua posição correta
+def manhattan(puzzle):
+    total = 0
+    for i in range(3):
+        for j in range(3):
+            value = puzzle[i][j]
+            if value != 0:
+                target_x = (value - 1) // 3
+                target_y = (value - 1) % 3
+                total += abs(i - target_x) + abs(j - target_y)
+    return total
+
+# A função de busca gulosa utiliza a heurística de Manhattan para priorizar os estados que estão mais próximos da solução.
+# Ela utiliza uma fila de prioridade (heap) para armazenar os estados.
+def busca_gulosa(puzzle_inicial):
+    initial_state = deepcopy(puzzle_inicial)
+    visited = set()
+    explored_nodes = []
+
+    heap = []
+    counter = count()  # para evitar comparação entre objetos
+    heuristica = manhattan(initial_state.getNumbers())
+    heapq.heappush(heap, (heuristica, next(counter), initial_state, []))  # (heurística, estado, caminho)
+
+    max_heap_size = 1
+    num_visited_nodes = 0
+
+    while heap:
+        if len(heap) > max_heap_size:
+            max_heap_size = len(heap)
+
+        _, _, current_puzzle, path = heapq.heappop(heap)
+        serialized = serialize(current_puzzle.getNumbers())
+
+        if serialized in visited:
+            continue
+
+        visited.add(serialized)
+        explored_nodes.append(current_puzzle)
+        num_visited_nodes += 1
+
+        if current_puzzle.is_solved():
+            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes
+
+        white_i, white_j = current_puzzle.getWhiteSpace()
+        directions = [(-1,0), (1,0), (0,-1), (0,1)]
+
+        for dx, dy in directions:
+            ni, nj = white_i + dx, white_j + dy
+            if 0 <= ni < 3 and 0 <= nj < 3:
+                num_to_move = current_puzzle.getNumbers()[ni][nj]
+                if current_puzzle.canMove(num_to_move):
+                    new_puzzle = deepcopy(current_puzzle)
+                    new_puzzle.move(num_to_move)
+                    serialized_new = serialize(new_puzzle.getNumbers())
+                    if serialized_new not in visited:
+                        h = manhattan(new_puzzle.getNumbers())
+                        heapq.heappush(heap, (h, next(counter), new_puzzle, path + [current_puzzle]))
+
+    return None, explored_nodes, visited, max_heap_size, num_visited_nodes
 
 # Busca A*
