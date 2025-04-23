@@ -1,13 +1,18 @@
 # eightPuzzle
  Utilização de diferentes métodos de busca para resolução do jogo dos 8
 
+## Autores
+Gabriel Lopes Bastos (G4brielLB)
+José Victor Vieira de Oliveira (@vickminari)
+Pedro Emanuel Moreira Carvalho (@PedroEmanuelMoreiraCarvalho)
+
 """
 Este código implementa e testa diferentes métodos de busca para resolver o problema do puzzle 8. 
 Os métodos de busca avaliados incluem:
 
 1. Busca em largura.
 2. Busca em profundidade e suas variações.
-3. Busca gulosa.
+3. Busca gulosa com algoritmo Manhattan.
 4. Busca A* utilizando o algoritmo de Manhattan.
 
 A estrutura do código está organizada da seguinte forma:
