@@ -1,4 +1,3 @@
-#from puzzle_8 import Puzzle_8
 from copy import deepcopy
 import heapq
 from itertools import count
@@ -20,8 +19,7 @@ def busca_largura(puzzle_inicial):
 
     while queue:
         # Atualiza o custo de memória
-        if len(queue) > max_queue_size:
-            max_queue_size = len(queue)
+        max_queue_size = max(max_queue_size, len(queue))
 
         current_puzzle, path = queue.pop(0)
         serialized = serialize(current_puzzle.getNumbers())
@@ -69,8 +67,7 @@ def busca_profundidade(puzzle):
 
     while stack:
         # Atualiza o custo de memória
-        if len(stack) > max_stack_size:
-            max_stack_size = len(stack)
+        max_stack_size = max(max_stack_size, len(stack))
 
         current_puzzle, path = stack.pop()  # Agora usando pilha (LIFO)
         serialized = serialize(current_puzzle.getNumbers())
@@ -110,8 +107,7 @@ def busca_profundidade_limitada(puzzle_inicial, limite):
     explored_nodes = []
 
     while stack:
-        if len(stack) > max_stack_size:
-            max_stack_size = len(stack)
+        max_stack_size = max(max_stack_size, len(stack))
 
         current_puzzle, path, profundidade, visited = stack.pop()
         serialized = serialize(current_puzzle.getNumbers())
@@ -154,8 +150,7 @@ def busca_profundidade_visitado(puzzle):
 
     while stack:
         # Atualiza o custo de memória
-        if len(stack) > max_stack_size:
-            max_stack_size = len(stack)
+        max_stack_size = max(max_stack_size, len(stack))
 
         current_puzzle, path = stack.pop()  # Agora usando pilha (LIFO)
         serialized = serialize(current_puzzle.getNumbers())
@@ -218,10 +213,10 @@ def busca_gulosa(puzzle_inicial):
 
     max_heap_size = 1
     num_visited_nodes = 0
+    profundidade_maxima = 0
 
     while heap:
-        if len(heap) > max_heap_size:
-            max_heap_size = len(heap)
+        max_heap_size = max(max_heap_size, len(heap))
 
         _, _, current_puzzle, path = heapq.heappop(heap)
         serialized = serialize(current_puzzle.getNumbers())
@@ -233,8 +228,10 @@ def busca_gulosa(puzzle_inicial):
         explored_nodes.append(current_puzzle)
         num_visited_nodes += 1
 
+        profundidade_maxima = max(profundidade_maxima, len(path))
+        
         if current_puzzle.is_solved():
-            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes
+            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
 
         white_i, white_j = current_puzzle.getWhiteSpace()
         directions = [(-1,0), (1,0), (0,-1), (0,1)]
@@ -251,7 +248,7 @@ def busca_gulosa(puzzle_inicial):
                         h = manhattan(new_puzzle.getNumbers())
                         heapq.heappush(heap, (h, next(counter), new_puzzle, path + [current_puzzle]))
 
-    return None, explored_nodes, visited, max_heap_size, num_visited_nodes
+    return None, explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
 
 # Busca A*
 # A busca A* combina a heurística de Manhattan com o custo real (g) para priorizar os estados.
@@ -270,10 +267,10 @@ def busca_a_star(puzzle_inicial):
 
     max_heap_size = 1
     num_visited_nodes = 0
+    profundidade_maxima = 0
 
     while heap:
-        if len(heap) > max_heap_size:
-            max_heap_size = len(heap)
+        max_heap_size = max(max_heap_size, len(heap))
 
         _, _, g, current_puzzle, path = heapq.heappop(heap)
         serialized = serialize(current_puzzle.getNumbers())
@@ -285,8 +282,10 @@ def busca_a_star(puzzle_inicial):
         explored_nodes.append(current_puzzle)
         num_visited_nodes += 1
 
+        profundidade_maxima = max(profundidade_maxima, len(path))
+
         if current_puzzle.is_solved():
-            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes
+            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
 
         white_i, white_j = current_puzzle.getWhiteSpace()
         directions = [(-1,0), (1,0), (0,-1), (0,1)]
@@ -305,4 +304,4 @@ def busca_a_star(puzzle_inicial):
                         f = new_g + h
                         heapq.heappush(heap, (f, next(counter), new_g, new_puzzle, path + [current_puzzle])) # (f = g+h, contador, g, estado, caminho)
 
-    return None, explored_nodes, visited, max_heap_size, num_visited_nodes
+    return None, explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima

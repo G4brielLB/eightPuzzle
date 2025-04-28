@@ -26,7 +26,7 @@ puzzle.setNumbers(teste)
 print("="*50)
 print("BUSCA GULOSA (1)")
 print("="*50)
-caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_gulosa(puzzle)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo, profundidade_maxima = busca_gulosa(puzzle)
 if caminho_bfs is None:
     print("Não foi possível encontrar uma solução.")
 else:
@@ -37,6 +37,7 @@ else:
 
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
+    print(f"Profundidade máxima: {profundidade_maxima}")
 
 puzzle.reset()
 puzzle.setNumbers(teste_2)
@@ -44,7 +45,7 @@ puzzle.setNumbers(teste_2)
 print("="*50)
 print("BUSCA GULOSA (2)")
 print("="*50)
-caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_gulosa(puzzle)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo, profundidade_maxima = busca_gulosa(puzzle)
 if caminho_bfs is None:
     print("Não foi possível encontrar uma solução.")
 else:
@@ -55,6 +56,7 @@ else:
 
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
+    print(f"Profundidade máxima: {profundidade_maxima}")
 
 puzzle.reset()
 puzzle.setNumbers(teste_3)
@@ -62,7 +64,7 @@ puzzle.setNumbers(teste_3)
 print("="*50)
 print("BUSCA GULOSA (3)")
 print("="*50)
-caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_gulosa(puzzle)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo, profundidade_maxima = busca_gulosa(puzzle)
 if caminho_bfs is None:
     print("Não foi possível encontrar uma solução.")
 else:
@@ -73,6 +75,7 @@ else:
 
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
+    print(f"Profundidade máxima: {profundidade_maxima}")
 
 puzzle.reset()
 puzzle.setNumbers(teste)
@@ -80,7 +83,7 @@ puzzle.setNumbers(teste)
 print("="*50)
 print("BUSCA A* (1)")
 print("="*50)
-caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_a_star(puzzle)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo, profundidade_maxima = busca_a_star(puzzle)
 if caminho_bfs is None:
     print("Não foi possível encontrar uma solução.")
 else:
@@ -91,6 +94,7 @@ else:
 
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
+    print(f"Profundidade máxima: {profundidade_maxima}")
 
 puzzle.reset()
 puzzle.setNumbers(teste_2)
@@ -98,7 +102,7 @@ puzzle.setNumbers(teste_2)
 print("="*50)
 print("BUSCA A* (2)")
 print("="*50)
-caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_a_star(puzzle)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo, profundidade_maxima = busca_a_star(puzzle)
 if caminho_bfs is None:
     print("Não foi possível encontrar uma solução.")
 else:
@@ -109,6 +113,7 @@ else:
 
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
+    print(f"Profundidade máxima: {profundidade_maxima}")
 
 puzzle.reset()
 puzzle.setNumbers(teste_3)
@@ -116,7 +121,7 @@ puzzle.setNumbers(teste_3)
 print("="*50)
 print("BUSCA A* (3)")
 print("="*50)
-caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo = busca_a_star(puzzle)
+caminho_bfs, explorados_bfs, visitados_bfs, custo_espaco, custo_tempo, profundidade_maxima = busca_a_star(puzzle)
 if caminho_bfs is None:
     print("Não foi possível encontrar uma solução.")
 else:
@@ -127,6 +132,7 @@ else:
 
     print(f"Custo de espaço (tamanho máximo fronteira de estado): {custo_espaco}")
     print(f"Custo de tempo (nós visitados): {custo_tempo}")
+    print(f"Profundidade máxima: {profundidade_maxima}")
 
 
 
