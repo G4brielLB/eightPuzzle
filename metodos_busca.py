@@ -190,9 +190,7 @@ def busca_profundidade_visitado(puzzle):
 
     return None, explored_nodes, visited, max_stack_size, num_visited_nodes, 0  # profundidade 0 se falhar
 
-# Busca heuristica (gulosa)
-
-# definindo a heurística de Manhattan
+# Definindo a heurística de Manhattan
 # A função calcula a soma das distâncias de Manhattan de cada número em relação à sua posição correta
 def manhattan(puzzle):
     total = 0
@@ -205,6 +203,7 @@ def manhattan(puzzle):
                 total += abs(i - target_x) + abs(j - target_y)
     return total
 
+# Busca heuristica (gulosa)
 # A função de busca gulosa utiliza a heurística de Manhattan para priorizar os estados que estão mais próximos da solução.
 # Ela utiliza uma fila de prioridade (heap) para armazenar os estados.
 def busca_gulosa(puzzle_inicial):
@@ -255,3 +254,55 @@ def busca_gulosa(puzzle_inicial):
     return None, explored_nodes, visited, max_heap_size, num_visited_nodes
 
 # Busca A*
+# A busca A* combina a heurística de Manhattan com o custo real (g) para priorizar os estados.
+# Ela utiliza uma fila de prioridade (heap) para armazenar os estados.
+# A função calcula o custo total (f = g + h) para cada estado e prioriza os estados com menor custo total.
+# A função de busca A* utiliza a heurística de Manhattan para priorizar os estados que estão mais próximos da solução.
+def busca_a_star(puzzle_inicial):
+    initial_state = deepcopy(puzzle_inicial)
+    visited = set()
+    explored_nodes = []
+
+    heap = []
+    counter = count()
+    heuristica = manhattan(initial_state.getNumbers())
+    heapq.heappush(heap, (heuristica, next(counter), 0, initial_state, []))  
+
+    max_heap_size = 1
+    num_visited_nodes = 0
+
+    while heap:
+        if len(heap) > max_heap_size:
+            max_heap_size = len(heap)
+
+        _, _, g, current_puzzle, path = heapq.heappop(heap)
+        serialized = serialize(current_puzzle.getNumbers())
+
+        if serialized in visited:
+            continue
+
+        visited.add(serialized)
+        explored_nodes.append(current_puzzle)
+        num_visited_nodes += 1
+
+        if current_puzzle.is_solved():
+            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes
+
+        white_i, white_j = current_puzzle.getWhiteSpace()
+        directions = [(-1,0), (1,0), (0,-1), (0,1)]
+
+        for dx, dy in directions:
+            ni, nj = white_i + dx, white_j + dy
+            if 0 <= ni < 3 and 0 <= nj < 3:
+                num_to_move = current_puzzle.getNumbers()[ni][nj]
+                if current_puzzle.canMove(num_to_move):
+                    new_puzzle = deepcopy(current_puzzle)
+                    new_puzzle.move(num_to_move)
+                    serialized_new = serialize(new_puzzle.getNumbers())
+                    if serialized_new not in visited:
+                        new_g = g + 1  # Custo real aumenta 1 a cada movimento
+                        h = manhattan(new_puzzle.getNumbers())
+                        f = new_g + h
+                        heapq.heappush(heap, (f, next(counter), new_g, new_puzzle, path + [current_puzzle])) # (f = g+h, contador, g, estado, caminho)
+
+    return None, explored_nodes, visited, max_heap_size, num_visited_nodes
