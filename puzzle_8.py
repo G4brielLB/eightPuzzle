@@ -1,7 +1,5 @@
 import random
 
-gabarito = [[1,2,3],[4,5,6],[7,8,0]]
-
 class Puzzle_8:
     
     def __init__(self):
@@ -20,12 +18,30 @@ class Puzzle_8:
         for i in range(len(self.numbers)):
             for j in range(len(self.numbers[i])):
                 if(self.numbers[i][j] == 0):
-                    self. white_space = [i,j]
+                    self.white_space = [i,j]
     
     def reset(self):
         self.numbers = [[1,2,3],[4,5,6],[7,8,0]]
         self.white_space = [2,2]
         self.last_num_moved = 0
+    
+    def switchNums(self, num1, num2):
+        try:
+            pos_1 = self.getPos(num1)
+            pos_2 = self.getPos(num2)
+            
+            new_matrix = self.numbers.copy()
+            new_matrix[pos_1[0]][pos_1[1]] = num2
+            new_matrix[pos_2[0]][pos_2[1]] = num1
+            
+            self.setNumbers(new_matrix)
+        except Exception as e:
+            raise e
+    
+    def hasWon(self):
+        if(self.numbers == [[1,2,3],[4,5,6],[7,8,0]]):
+            return True
+        return False
     
     def canMove(self, num):
         try:
@@ -73,6 +89,15 @@ class Puzzle_8:
             return num_to_move
         
         return 0
+    
+    def is_solved(self):
+        gabarito = [[1,2,3],[4,5,6],[7,8,0]]
+        
+        for i in range(len(self.numbers)):
+            for j in range(len(self.numbers[i])):
+                if(self.numbers[i][j] != gabarito[i][j]):
+                    return False
+        return True
         
     def getPos(self, num):
         for i in range(len(self.numbers)):
@@ -80,14 +105,3 @@ class Puzzle_8:
                 if(self.numbers[i][j] == num):
                     return [i,j]
         raise Exception("número não encontrado")
-    
-    def is_solved(self):
-        for i in range(len(self.numbers)):
-            for j in range(len(self.numbers[i])):
-                if(self.numbers[i][j] != gabarito[i][j]):
-                    return False
-        return True
-    
-    def __str__(self):
-        return '\n'.join([' '.join(map(str, row)) for row in self.numbers])
-    
