@@ -3,7 +3,7 @@ import time
 import threading
 from puzzle_8_operator import Puzzle_8_Operator
 
-screen_width = 800
+screen_width = 1000
 screen_height = 600
 
 pygame.init()
