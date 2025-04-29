@@ -16,6 +16,7 @@ def busca_largura(puzzle_inicial):
 
     max_queue_size = 1  # custo de memória (máximo tamanho da fronteira)
     num_visited_nodes = 0  # nós efetivamente visitados (com filhos gerados)
+    total_nodes_generated = 1  # inclui o nó inicial
 
     while queue:
         # Atualiza o custo de memória
@@ -34,7 +35,7 @@ def busca_largura(puzzle_inicial):
 
         # Verifica se é solução
         if current_puzzle.is_solved():
-            return path + [current_puzzle], explored_nodes, visited, max_queue_size, num_visited_nodes
+            return path + [current_puzzle], explored_nodes, visited, max_queue_size, num_visited_nodes, total_nodes_generated
 
         # Gera os filhos (movimentos possíveis)
         white_i, white_j = current_puzzle.getWhiteSpace()
@@ -47,15 +48,17 @@ def busca_largura(puzzle_inicial):
                 if current_puzzle.canMove(num_to_move):
                     new_puzzle = deepcopy(current_puzzle)
                     new_puzzle.move(num_to_move)
+                    total_nodes_generated += 1  # Incrementa sempre que um novo nó é gerado
                     serialized_new = serialize(new_puzzle.getNumbers())
                     if serialized_new not in visited:
                         queue.append((new_puzzle, path + [current_puzzle]))
 
-    return None, explored_nodes, visited, max_queue_size, num_visited_nodes
+    return None, explored_nodes, visited, max_queue_size, num_visited_nodes, total_nodes_generated
 
 
 
 # Busca em profundidade
+# FUNÇÃO NÃO UTILIZADA
 def busca_profundidade(puzzle):
     initial_state = deepcopy(puzzle)
     visited = set()
@@ -99,6 +102,7 @@ def busca_profundidade(puzzle):
     return None, explored_nodes, visited, max_stack_size, num_visited_nodes, 0  # profundidade 0 se falhar
 
 
+# FUNÇÃO NÃO UTILIZADA
 def busca_profundidade_limitada(puzzle_inicial, limite):
     initial_state = deepcopy(puzzle_inicial)
     stack = [(initial_state, [], 0, set())]  # (estado atual, caminho, profundidade, visitados no caminho)
@@ -139,6 +143,7 @@ def busca_profundidade_limitada(puzzle_inicial, limite):
     return None, explored_nodes, set(), max_stack_size, num_visited_nodes, 0
 
 
+# FUNÇÃO BUSCA EM PROFUNDIDADE UTILIZADA
 def busca_profundidade_visitado(puzzle):
     initial_state = deepcopy(puzzle)
     visited = set()
@@ -147,6 +152,7 @@ def busca_profundidade_visitado(puzzle):
 
     max_stack_size = 1  # custo de memória (máximo tamanho da fronteira)
     num_visited_nodes = 0  # nós efetivamente visitados (com filhos gerados)
+    total_nodes_generated = 1  # inclui o nó inicial
 
     while stack:
         # Atualiza o custo de memória
@@ -166,7 +172,7 @@ def busca_profundidade_visitado(puzzle):
         # Verifica se é a solução
         if current_puzzle.is_solved():
             profundidade_solucao = len(path)
-            return path + [current_puzzle], explored_nodes, visited, max_stack_size, num_visited_nodes, profundidade_solucao
+            return path + [current_puzzle], explored_nodes, visited, max_stack_size, num_visited_nodes, profundidade_solucao, total_nodes_generated
 
         # Gera os filhos (movimentos possíveis)
         white_i, white_j = current_puzzle.getWhiteSpace()
@@ -179,11 +185,13 @@ def busca_profundidade_visitado(puzzle):
                 if current_puzzle.canMove(num_to_move):
                     new_puzzle = deepcopy(current_puzzle)
                     new_puzzle.move(num_to_move)
+                    total_nodes_generated += 1  # Incrementa sempre que um novo nó é gerado
                     serialized_new = serialize(new_puzzle.getNumbers())
                     if serialized_new not in visited:  # Evita adicionar estados já visitados
                         stack.append((new_puzzle, path + [current_puzzle]))
 
-    return None, explored_nodes, visited, max_stack_size, num_visited_nodes, 0  # profundidade 0 se falhar
+    return None, explored_nodes, visited, max_stack_size, num_visited_nodes, 0, total_nodes_generated  # profundidade 0 se falhar
+
 
 # Definindo a heurística de Manhattan
 # A função calcula a soma das distâncias de Manhattan de cada número em relação à sua posição correta
@@ -214,6 +222,7 @@ def busca_gulosa(puzzle_inicial):
     max_heap_size = 1
     num_visited_nodes = 0
     profundidade_maxima = 0
+    total_nodes_generated = 1  # inclui o nó inicial
 
     while heap:
         max_heap_size = max(max_heap_size, len(heap))
@@ -231,7 +240,7 @@ def busca_gulosa(puzzle_inicial):
         profundidade_maxima = max(profundidade_maxima, len(path))
         
         if current_puzzle.is_solved():
-            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
+            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima, total_nodes_generated
 
         white_i, white_j = current_puzzle.getWhiteSpace()
         directions = [(-1,0), (1,0), (0,-1), (0,1)]
@@ -243,18 +252,14 @@ def busca_gulosa(puzzle_inicial):
                 if current_puzzle.canMove(num_to_move):
                     new_puzzle = deepcopy(current_puzzle)
                     new_puzzle.move(num_to_move)
+                    total_nodes_generated += 1  # Incrementa sempre que um novo nó é gerado
                     serialized_new = serialize(new_puzzle.getNumbers())
                     if serialized_new not in visited:
                         h = manhattan(new_puzzle.getNumbers())
                         heapq.heappush(heap, (h, next(counter), new_puzzle, path + [current_puzzle]))
 
-    return None, explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
+    return None, explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima, total_nodes_generated
 
-# Busca A*
-# A busca A* combina a heurística de Manhattan com o custo real (g) para priorizar os estados.
-# Ela utiliza uma fila de prioridade (heap) para armazenar os estados.
-# A função calcula o custo total (f = g + h) para cada estado e prioriza os estados com menor custo total.
-# A função de busca A* utiliza a heurística de Manhattan para priorizar os estados que estão mais próximos da solução.
 def busca_a_star(puzzle_inicial):
     initial_state = deepcopy(puzzle_inicial)
     visited = set()
@@ -268,6 +273,7 @@ def busca_a_star(puzzle_inicial):
     max_heap_size = 1
     num_visited_nodes = 0
     profundidade_maxima = 0
+    total_nodes_generated = 1  # inclui o nó inicial
 
     while heap:
         max_heap_size = max(max_heap_size, len(heap))
@@ -285,7 +291,7 @@ def busca_a_star(puzzle_inicial):
         profundidade_maxima = max(profundidade_maxima, len(path))
 
         if current_puzzle.is_solved():
-            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
+            return path + [current_puzzle], explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima, total_nodes_generated
 
         white_i, white_j = current_puzzle.getWhiteSpace()
         directions = [(-1,0), (1,0), (0,-1), (0,1)]
@@ -297,6 +303,7 @@ def busca_a_star(puzzle_inicial):
                 if current_puzzle.canMove(num_to_move):
                     new_puzzle = deepcopy(current_puzzle)
                     new_puzzle.move(num_to_move)
+                    total_nodes_generated += 1  # Incrementa sempre que um novo nó é gerado
                     serialized_new = serialize(new_puzzle.getNumbers())
                     if serialized_new not in visited:
                         new_g = g + 1  # Custo real aumenta 1 a cada movimento
@@ -304,4 +311,4 @@ def busca_a_star(puzzle_inicial):
                         f = new_g + h
                         heapq.heappush(heap, (f, next(counter), new_g, new_puzzle, path + [current_puzzle])) # (f = g+h, contador, g, estado, caminho)
 
-    return None, explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima
+    return None, explored_nodes, visited, max_heap_size, num_visited_nodes, profundidade_maxima, total_nodes_generated

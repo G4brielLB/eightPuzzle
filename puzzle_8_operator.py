@@ -96,7 +96,7 @@ class Puzzle_8_Operator:
         
     def reset(self):
         self.puzzle_8.reset()
-        # self.puzzle_8.setNumbers([[1,2,3],[4,5,6],[7,8,0]])
+        #self.puzzle_8.setNumbers([[1,2,0],[4,6,3],[7,5,8]])
         self.updateNumbers()
         self.moves = 0
         self.memory_label = self.time_label = ""
@@ -195,7 +195,7 @@ class Puzzle_8_Operator:
         if(len(visitado_move_sequence) == 29):
             self.moves = total_moves - 29
             
-        self.showInfo(tempo, memoria, profundidade)
+        self.showInfo(tempo, memoria, profundidade + 1)
         self.moveSequence(visitado_move_sequence)
         
     def buscaGulosa(self):

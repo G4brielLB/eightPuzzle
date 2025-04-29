@@ -5,6 +5,7 @@
 Gabriel Lopes Bastos (G4brielLB)
 José Victor Vieira de Oliveira (@vickminari)
 Pedro Emanuel Moreira Carvalho (@PedroEmanuelMoreiraCarvalho)
+Emmanuel David de Almeida Santos
 
 """
 Este código implementa e testa diferentes métodos de busca para resolver o problema do puzzle 8. 

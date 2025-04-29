@@ -13,7 +13,7 @@ pygame.display.set_icon(image_icon)
 window = pygame.display.set_mode((screen_width,screen_height))
 font = pygame.font.SysFont('Tohama',40, True,False)
 evenflow = pygame.mixer.Sound("./images/evenflow.mp3")
-evenflow.set_volume(0.1)
+evenflow.set_volume(0.2)
 
 running = True
 
