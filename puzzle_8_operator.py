@@ -25,6 +25,7 @@ class Puzzle_8_Operator:
         
         self.memory_label = ""
         self.time_label = ""
+        self.search_label = ""
         
         self.animation = []
         self.background_animation = []
@@ -88,7 +89,7 @@ class Puzzle_8_Operator:
         for num in sequence:
             if(self.puzzle_8.canMove(num)):
                 self.moveBlock(num)
-            time.sleep(0.5)
+            time.sleep(0.3)
         
         self.moving = False
         
@@ -98,6 +99,7 @@ class Puzzle_8_Operator:
         self.updateNumbers()
         self.moves = 0
         self.memory_label = self.time_label = ""
+        self.search_label = ""
         
     def updateNumbers(self):
         self.blocks.clear()
@@ -143,30 +145,30 @@ class Puzzle_8_Operator:
         
         if(len(profundidade_move_sequence) == 0):
             return
+        
+        self.search_label = "Busca em Profundidade"
                     
         self.setNumbers(primeiro_estado)
         self.updateNumbers()
         
         if(len(profundidade_move_sequence) == 29):
-            print("rapaz")
-            print(total_moves - 29)
             self.moves = total_moves - 29
             
-        self.moveSequence(profundidade_move_sequence)
         self.showInfo(tempo, memoria)   
+        self.moveSequence(profundidade_move_sequence)
         
     def buscaProfundidadeLimitada(self):
         limitada_move_sequence, tempo, memoria, primeiro_estado, total_moves = buscaProfundidadeLimitada(self.puzzle_8.getNumbers())
         
         if(len(limitada_move_sequence) == 0):
             return
+        
+        self.search_label = "Profundidade Limitada"
                     
         self.setNumbers(primeiro_estado)
         self.updateNumbers()
         
         if(len(limitada_move_sequence) == 29):
-            print("rapaz")
-            print(total_moves - 29)
             self.moves = total_moves - 29
             
         self.moveSequence(limitada_move_sequence)
@@ -182,48 +184,51 @@ class Puzzle_8_Operator:
         
         if(len(visitado_move_sequence) == 0):
             return
+        
+        self.search_label = "Profundidade Visitados"
                     
         self.setNumbers(primeiro_estado)
         self.updateNumbers()
         
         if(len(visitado_move_sequence) == 29):
-            print("rapaz")
-            print(total_moves - 29)
             self.moves = total_moves - 29
             
-        self.moveSequence(visitado_move_sequence)
         self.showInfo(tempo, memoria)
+        self.moveSequence(visitado_move_sequence)
         
     def buscaGulosa(self):
         gulosa_move_sequence, tempo, memoria, primeiro_estado, total_moves = buscaGulosa(self.puzzle_8.getNumbers())
         
         if(len(gulosa_move_sequence) == 0):
             return
+        
+        self.search_label = "Busca Gulosa ≥¬≤"
                     
         self.setNumbers(primeiro_estado)
         self.updateNumbers()
         
         if(len(gulosa_move_sequence) == 29):
-            print("rapaz")
-            print(total_moves - 29)
             self.moves = total_moves - 29
             
-        self.moveSequence(gulosa_move_sequence)
         self.showInfo(tempo, memoria)
+        self.moveSequence(gulosa_move_sequence)
         
     def aStar(self):
         a_star_move_sequence, tempo, memoria, primeiro_estado, total_moves = aStar(self.puzzle_8.getNumbers())
         
         if(len(a_star_move_sequence) == 0):
             return
+                    
+        self.search_label = "A star *"
+        
+        self.setNumbers(primeiro_estado)
+        self.updateNumbers()
         
         if(len(a_star_move_sequence) == 29):
             self.moves = total_moves - 29
-                    
-        self.setNumbers(primeiro_estado)
-        self.updateNumbers()
-        self.moveSequence(a_star_move_sequence)
+        
         self.showInfo(tempo, memoria)     
+        self.moveSequence(a_star_move_sequence)
         
     def buscaLargura(self):
         busca_largura_move_sequence, tempo, memoria, primeiro_estado, total_moves = buscaLargura(self.puzzle_8.getNumbers())
@@ -231,17 +236,23 @@ class Puzzle_8_Operator:
         if(len(busca_largura_move_sequence) == 0):
             return
         
+        self.search_label = "Busca em Largura"
+        
         if(len(busca_largura_move_sequence) == 29):
             self.moves = total_moves - 29
                     
         self.setNumbers(primeiro_estado)
         self.updateNumbers()
-        self.moveSequence(busca_largura_move_sequence)
-        self.showInfo(tempo, memoria)    
         
-    def showInfo(self, time, memory):
-        self.time_label = "tempo gasto: " + str(time) + " _movimentos_"
-        self.memory_label = "memória usada: " + str(memory) + " _itens de memória_"
+        if(len(busca_largura_move_sequence) == 29):
+            self.moves = total_moves - 29
+            
+        self.showInfo(tempo, memoria)    
+        self.moveSequence(busca_largura_move_sequence)
+        
+    def showInfo(self, memory, time):
+        self.time_label = "Custo de tempo: " + str(time)
+        self.memory_label = "Custo de espaço: " + str(memory)
         
     def moveBlock(self, block_num):
         block = self.getBlock(block_num)
@@ -278,6 +289,19 @@ class Puzzle_8_Operator:
         
         memory_label = self.font.render(self.memory_label, False, (252, 200, 3))
         self.canvas.blit(memory_label, (50,535))
+        
+        search_label = self.font.render(self.search_label, False, (252, 200, 3))
+        self.canvas.blit(search_label, (50,100))
+        
+        self.canvas.blit(self.font.render("Busca Gulosa: G", False, (252, 200, 3)), (580,50))
+        self.canvas.blit(self.font.render("A*: A", False, (252, 200, 3)), (580,80))
+        self.canvas.blit(self.font.render("Busca em Largura: L", False, (252, 200, 3)), (580,110))
+        self.canvas.blit(self.font.render("Busca em Profundidade: P", False, (252, 200, 3)), (580,140))
+        self.canvas.blit(self.font.render("Profundidade Limitada: M", False, (252, 200, 3)), (580,170))
+        self.canvas.blit(self.font.render("Profundidade Visitados: K", False, (252, 200, 3)), (580,200))
+        self.canvas.blit(self.font.render("Resetar: R", False, (252, 200, 3)), (580,230))
+        self.canvas.blit(self.font.render("Embaralhar: S", False, (252, 200, 3)), (580,260))
+        self.canvas.blit(self.font.render("Edit mode: E", False, (252, 200, 3)), (580,290))
         
         if(self.edit_mode):
             edit_label = self.font.render("edit mode", False, (252, 50, 3))
