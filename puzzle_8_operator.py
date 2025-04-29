@@ -199,7 +199,7 @@ class Puzzle_8_Operator:
         self.moveSequence(visitado_move_sequence)
         
     def buscaGulosa(self):
-        gulosa_move_sequence, tempo, memoria, primeiro_estado, total_moves = buscaGulosa(self.puzzle_8.getNumbers())
+        gulosa_move_sequence, tempo, memoria, primeiro_estado, total_moves, profundidade = buscaGulosa(self.puzzle_8.getNumbers())
         
         if(len(gulosa_move_sequence) == 0):
             return
@@ -212,11 +212,11 @@ class Puzzle_8_Operator:
         if(len(gulosa_move_sequence) == 29):
             self.moves = total_moves - 29
             
-        self.showInfo(tempo, memoria, "")
+        self.showInfo(tempo, memoria, profundidade)
         self.moveSequence(gulosa_move_sequence)
         
     def aStar(self):
-        a_star_move_sequence, tempo, memoria, primeiro_estado, total_moves = aStar(self.puzzle_8.getNumbers())
+        a_star_move_sequence, tempo, memoria, primeiro_estado, total_moves, profundidade = aStar(self.puzzle_8.getNumbers())
         
         if(len(a_star_move_sequence) == 0):
             return
@@ -229,7 +229,7 @@ class Puzzle_8_Operator:
         if(len(a_star_move_sequence) == 29):
             self.moves = total_moves - 29
         
-        self.showInfo(tempo, memoria, "")     
+        self.showInfo(tempo, memoria, profundidade)     
         self.moveSequence(a_star_move_sequence)
         
     def buscaLargura(self):
