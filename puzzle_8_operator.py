@@ -101,6 +101,7 @@ class Puzzle_8_Operator:
         self.moves = 0
         self.memory_label = self.time_label = ""
         self.search_label = ""
+        self.depth_label = ""
         
     def updateNumbers(self):
         self.blocks.clear()
