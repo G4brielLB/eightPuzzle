@@ -73,7 +73,7 @@ def buscaProfundidade(numbers):
     puzzle = Puzzle_8()
     puzzle.setNumbers(numbers)
     
-    caminho_profundidade, _, _, custo_espaco, custo_tempo, _ = busca_profundidade(puzzle)
+    caminho_profundidade, _, _, custo_espaco, custo_tempo, profundidade = busca_profundidade(puzzle)
 
     caminho = conversorCaminho(caminho_profundidade[-30:])
     
@@ -84,7 +84,7 @@ def buscaProfundidade(numbers):
     if(len(caminho) >= 29):
         primeiro_estado = caminho_profundidade[-30].numbers
     
-    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves
+    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves, profundidade
 
 def buscaProfundidadeLimitada(numbers):
     puzzle = Puzzle_8()
@@ -101,13 +101,13 @@ def buscaProfundidadeLimitada(numbers):
     if(len(caminho) >= 29):
         primeiro_estado = caminho_pl[-30].numbers
         
-    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves
+    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves, profundidade_max
 
 def buscaProfundidadeVisitado(numbers):
     puzzle = Puzzle_8()
     puzzle.setNumbers(numbers)
     
-    caminho_pv, _, _, custo_espaco, custo_tempo, _ = busca_profundidade_visitado(puzzle)
+    caminho_pv, _, _, custo_espaco, custo_tempo, profundidade = busca_profundidade_visitado(puzzle)
 
     caminho = conversorCaminho(caminho_pv[-30:])
     
@@ -118,4 +118,4 @@ def buscaProfundidadeVisitado(numbers):
     if(len(caminho) >= 29):
         primeiro_estado = caminho_pv[-30].numbers
     
-    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves
+    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves, profundidade
