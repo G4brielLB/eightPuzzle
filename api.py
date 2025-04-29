@@ -22,7 +22,7 @@ def buscaGulosa(numbers):
     puzzle = Puzzle_8()
     puzzle.setNumbers(numbers)
     
-    caminho_bfs, _, _, custo_espaco, custo_tempo, _ = busca_gulosa(puzzle)
+    caminho_bfs, _, _, custo_espaco, custo_tempo, profundidade = busca_gulosa(puzzle)
 
     caminho = conversorCaminho(caminho_bfs[-30:])
     
@@ -33,13 +33,13 @@ def buscaGulosa(numbers):
     if(len(caminho) >= 29):
         primeiro_estado = caminho_bfs[-30].numbers
     
-    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves
+    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves, profundidade
 
 def aStar(numbers):
     puzzle = Puzzle_8()
     puzzle.setNumbers(numbers)
     
-    caminho_a_star, _, _, custo_espaco, custo_tempo, _ = busca_a_star(puzzle)
+    caminho_a_star, _, _, custo_espaco, custo_tempo, profundidade = busca_a_star(puzzle)
 
     caminho = conversorCaminho(caminho_a_star[-30:])
     
@@ -50,7 +50,7 @@ def aStar(numbers):
     if(len(caminho) >= 29):
         primeiro_estado = caminho_a_star[-30].numbers
     
-    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves
+    return caminho, custo_espaco, custo_tempo, primeiro_estado, total_moves, profundidade
 
 def buscaLargura(numbers):
     puzzle = Puzzle_8()
