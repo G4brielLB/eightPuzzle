@@ -314,7 +314,7 @@ class Puzzle_8_Operator:
         
         if(self.edit_mode):
             edit_label = self.font.render("edit mode", False, (252, 50, 3))
-            self.canvas.blit(edit_label, (600,50))
+            self.canvas.blit(edit_label, (600,20))
         
         for block in self.blocks:
             block.render(self.canvas)
